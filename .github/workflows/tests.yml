@@ -1,0 +1,18 @@
+# Lance les tests à chaque push. Au départ, plusieurs tests sont ROUGES :
+# c'est normal, votre travail consiste à les faire passer au vert.
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  php:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: php } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with: { php-version: "8.3", extensions: pdo_sqlite }
+      - run: composer install --no-progress
+      - run: vendor/bin/phpunit
