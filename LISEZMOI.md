@@ -6,7 +6,8 @@ L'application **KinéGest** stocke les mots de passe en **SHA-1, sans sel**, et
 son « mot de passe oublié » envoie un nouveau mot de passe par courriel. Votre
 travail : passer à `password_hash()`, **migrer** les comptes existants sans
 connaître leurs mots de passe, et réécrire la réinitialisation avec un
-**jeton** à usage unique et à durée limitée. Les tests vous guident ; l'énoncé
+**jeton** à usage unique et à durée limitée, puis **limiter les tentatives**
+de connexion. Les tests vous guident ; l'énoncé
 complet est dans le PDF du TP.
 
 ## 1. Récupérer le projet
@@ -53,9 +54,10 @@ plusieurs tests sont rouges : c'est normal.** Le TP est terminé quand tout est 
 ## Organisation
 
 ```
-sql/                          schéma (Utilisateur, JetonReinit) et comptes existants
+sql/                          schéma (Utilisateur, JetonReinit, JournalConnexion) et comptes existants
 php/src/CompteService.php     inscription, connexion, changement de mot de passe
 php/src/ReinitialisationService.php   « mot de passe oublié »
+php/src/LimiteurTentatives.php        journal des connexions, blocage temporaire
 php/public/                   les pages : connexion, mot de passe oublié, nouveau mot de passe
 php/bin/constater.php         étape 0
 php/tests/                    tests PHPUnit

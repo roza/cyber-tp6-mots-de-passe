@@ -1,4 +1,5 @@
 -- Base KinéGest (version simplifiée) — SQLite
+DROP TABLE IF EXISTS JournalConnexion;
 DROP TABLE IF EXISTS JetonReinit;
 DROP TABLE IF EXISTS Utilisateur;
 
@@ -16,4 +17,14 @@ CREATE TABLE JetonReinit (
     empreinteJeton  VARCHAR(255) NOT NULL,
     expireLe        INTEGER      NOT NULL,   -- horodatage Unix
     utilise         INTEGER      NOT NULL DEFAULT 0
+);
+
+-- Journal des tentatives de connexion, réussies ou non. Le login est gardé
+-- tel que saisi : il peut ne correspondre à aucun compte.
+CREATE TABLE JournalConnexion (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    login       VARCHAR(50)  NOT NULL,
+    horodatage  INTEGER      NOT NULL,   -- horodatage Unix
+    reussie     INTEGER      NOT NULL,   -- 1 réussie, 0 échec
+    adresseIP   VARCHAR(45)  NOT NULL
 );

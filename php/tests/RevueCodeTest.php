@@ -21,4 +21,17 @@ final class RevueCodeTest extends TestCase
         );
         $this->assertMatchesRegularExpression('/\brandom_(bytes|int)\s*\(/', $code);
     }
+
+    /** Étape 4 — la page de connexion consulte et alimente le limiteur. */
+    public function testLaPageDeConnexionUtiliseLeLimiteur(): void
+    {
+        $code = file_get_contents(__DIR__ . '/../public/index.php');
+        $this->assertMatchesRegularExpression('/->estBloque\s*\(/', $code, 'index.php doit appeler estBloque()');
+        $this->assertMatchesRegularExpression('/->enregistrer\s*\(/', $code, 'index.php doit enregistrer chaque tentative');
+        $this->assertLessThan(
+            strpos($code, '->authentifier('),
+            strpos($code, '->estBloque('),
+            'Le blocage se vérifie AVANT de tester le mot de passe'
+        );
+    }
 }
